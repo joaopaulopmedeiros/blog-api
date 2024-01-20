@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.github.blog.models.Post;
 import com.github.blog.repositories.PostRepository;
 import com.github.blog.requests.SearchPostRequest;
+import com.github.blog.requests.StorePostRequest;
 import com.github.blog.responses.PagedResponse;
 import com.github.blog.responses.PostResponse;
 
@@ -35,5 +37,17 @@ public class PostService
             .page(request.getPage())
             .size(request.getSize())
             .build();
+    }
+
+    public PostResponse store(StorePostRequest request)
+    {
+        Post post = Post
+            .builder()
+            .title(request.getTitle())
+            .build();
+        
+        repository.save(post);
+        
+        return mapper.map(post, PostResponse.class);
     }
 }
