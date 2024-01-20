@@ -22,7 +22,7 @@ public class PostsController
     @GetMapping
     public ResponseEntity<PagedResponse<PostResponse>> search(SearchPostRequest request)
     {
-        var result = service.search(request);
+        PagedResponse<PostResponse> result = service.search(request);
         return ResponseEntity.ok(result);
     }
 }
