@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SearchPostsRequest extends PagedRequest
+public class SearchPostRequest extends PagedRequest
 {
     private String title;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
