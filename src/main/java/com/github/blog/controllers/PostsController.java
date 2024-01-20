@@ -3,6 +3,8 @@ package com.github.blog.controllers;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.blog.requests.SearchPostRequest;
+import com.github.blog.responses.PagedResponse;
+import com.github.blog.responses.PostResponse;
 import com.github.blog.services.PostService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,7 @@ public class PostsController
     private PostService service;
 
     @GetMapping
-    public ResponseEntity<?> search(SearchPostRequest request)
+    public ResponseEntity<PagedResponse<PostResponse>> search(SearchPostRequest request)
     {
         var result = service.search(request);
         return ResponseEntity.ok(result);
