@@ -1,6 +1,6 @@
 package com.github.blog.services;
 
-import java.util.stream.Collectors;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +23,12 @@ public class PostService
 
     public PagedResponse<PostResponse> search(SearchPostRequest request) 
     {
-        var page = PageRequest.of(request.getPage()-1, request.getSize());
+        PageRequest page = PageRequest.of(request.getPage() - 1, request.getSize());
 
-        var posts = repository.findAll(page);
-
-        var items = posts
+        List<PostResponse> items = repository.findAll(page)
             .stream()
             .map(post -> mapper.map(post, PostResponse.class))
-            .collect(Collectors.toList());
+            .toList();
 
         return PagedResponse.<PostResponse>builder()
             .items(items)
