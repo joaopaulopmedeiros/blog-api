@@ -1,5 +1,6 @@
 package com.github.blog.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -46,6 +47,7 @@ public class PostService
         Post post = Post
             .builder()
             .title(request.getTitle())
+            .publishedAt(LocalDateTime.now())
             .build();
         
         if (post == null) return null;
