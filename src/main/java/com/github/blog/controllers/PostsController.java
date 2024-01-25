@@ -8,20 +8,22 @@ import com.github.blog.responses.PagedResponse;
 import com.github.blog.responses.PostResponse;
 import com.github.blog.services.PostService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 @RestController
 @RequestMapping(value="posts")
 public class PostsController 
 {
-    @Autowired
-    private PostService service;
+    private final PostService service;
+
+    public PostsController(PostService service)
+    {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<PagedResponse<PostResponse>> search(SearchPostRequest request)

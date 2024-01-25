@@ -3,7 +3,6 @@ package com.github.blog.services;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +16,14 @@ import com.github.blog.responses.PostResponse;
 @Service
 public class PostService 
 {
-    @Autowired
-    private PostRepository repository;
+    private final PostRepository repository;
+    private final ModelMapper mapper;
 
-    @Autowired
-    private ModelMapper mapper;
+    public PostService(PostRepository repository, ModelMapper mapper)
+    {
+        this.repository = repository;
+        this.mapper = mapper;
+    }
 
     public PagedResponse<PostResponse> search(SearchPostRequest request) 
     {
@@ -45,6 +47,8 @@ public class PostService
             .builder()
             .title(request.getTitle())
             .build();
+        
+        if (post == null) return null;
         
         repository.save(post);
         
