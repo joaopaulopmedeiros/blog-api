@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.github.blog.models.Post;
@@ -13,6 +14,7 @@ import com.github.blog.requests.SearchPostRequest;
 import com.github.blog.requests.StorePostRequest;
 import com.github.blog.responses.PagedResponse;
 import com.github.blog.responses.PostResponse;
+import com.github.blog.specifications.PostSpecification;
 
 @Service
 public class PostService 
@@ -30,7 +32,9 @@ public class PostService
     {
         PageRequest page = PageRequest.of(request.getPage() - 1, request.getSize());
 
-        List<PostResponse> items = repository.findAll(page)
+        Specification<Post> specification = new PostSpecification().fromRequest(request);
+
+        List<PostResponse> items = repository.findAll(specification, page)
             .stream()
             .map(post -> mapper.map(post, PostResponse.class))
             .toList();
