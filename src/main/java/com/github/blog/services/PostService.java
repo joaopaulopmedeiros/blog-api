@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,11 @@ public class PostService
 
         Specification<Post> specification = new PostSpecification().fromRequest(request);
 
-        List<PostResponse> items = repository.findAll(specification, page)
+        Page<Post> registries = specification != null 
+            ? repository.findAll(specification, page) 
+            : repository.findAll(page);
+
+        List<PostResponse> items = registries
             .stream()
             .map(post -> mapper.map(post, PostResponse.class))
             .toList();
