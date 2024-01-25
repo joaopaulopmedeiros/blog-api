@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class PagedRequest 
 {
-    private Integer page;
-    private Integer size;    
+    private Integer page = 1;
+    private Integer size = 10;    
 }
