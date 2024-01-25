@@ -8,6 +8,7 @@ import com.github.blog.responses.PagedResponse;
 import com.github.blog.responses.PostResponse;
 import com.github.blog.services.PostService;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,7 @@ public class PostsController
     }
 
     @PostMapping
+    @CacheEvict(cacheNames="posts", allEntries=true)
     public ResponseEntity<PostResponse> store(@RequestBody StorePostRequest request) {        
         PostResponse result = service.store(request);
         return ResponseEntity.ok(result);
