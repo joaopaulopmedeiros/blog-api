@@ -31,9 +31,17 @@ class PostsControllerTests
     }
 
     @Test
-    void MustReturnPaginatedPosts() throws Exception 
+    void MustReturnOkWhenSearchWithPagination() throws Exception 
     {
         var result = this.template.getForEntity(baseUrl + "/posts?page=1&size=10", PagedResponse.class);
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
+
+    @Test
+    void MustReturnOkWhenSearchWithFilter() throws Exception 
+    {
+        var result = this.template.getForEntity(baseUrl + "/posts?title=example&page=1&size=10", PagedResponse.class);
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+	}
+
 }
