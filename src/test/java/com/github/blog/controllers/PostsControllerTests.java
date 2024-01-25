@@ -2,6 +2,7 @@ package com.github.blog.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,10 +22,18 @@ class PostsControllerTests
     @Autowired
     private TestRestTemplate template;
 
+    private String baseUrl;
+
+    @BeforeEach
+    void setUp() 
+    {
+        baseUrl = "http://localhost:" + port;
+    }
+
     @Test
     void MustReturnPaginatedPosts() throws Exception 
     {
-        var result = this.template.getForEntity("http://localhost:" + port + "/posts?page=1&size=10", PagedResponse.class);
+        var result = this.template.getForEntity(baseUrl + "/posts?page=1&size=10", PagedResponse.class);
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 }
