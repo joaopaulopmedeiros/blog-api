@@ -8,6 +8,7 @@ import com.github.blog.responses.PagedResponse;
 import com.github.blog.responses.PostResponse;
 import com.github.blog.services.PostService;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ public class PostsController
     }
 
     @GetMapping
+    @Cacheable("posts")
     public ResponseEntity<PagedResponse<PostResponse>> search(SearchPostRequest request)
     {
         PagedResponse<PostResponse> result = service.search(request);
