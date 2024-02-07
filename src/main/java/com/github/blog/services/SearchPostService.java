@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.github.blog.events.analytics.SearchAnalyticsEventProducer;
 import com.github.blog.events.analytics.SearchAnalyticsData;
 import com.github.blog.events.analytics.SearchAnalyticsEvent;
 import com.github.blog.models.Post;
@@ -22,11 +23,13 @@ import com.github.blog.specifications.PostSpecification;
 public class SearchPostService 
 {
     private final PostRepository repository;
+    private final SearchAnalyticsEventProducer producer;
     private final ModelMapper mapper;
 
-    public SearchPostService(PostRepository repository, ModelMapper mapper)
+    public SearchPostService(PostRepository repository, SearchAnalyticsEventProducer producer, ModelMapper mapper)
     {
         this.repository = repository;
+        this.producer = producer;
         this.mapper = mapper;
     }
 
@@ -34,10 +37,7 @@ public class SearchPostService
     {
         List<PostResponse> items = queryPosts(request);
 
-        SearchAnalyticsEvent event = raiseSearchEvent(items);
-
-        //pub
-        event.getType();
+        this.producer.send(raiseSearchEvent(items));
 
         return PagedResponse.<PostResponse>builder()
             .items(items)
